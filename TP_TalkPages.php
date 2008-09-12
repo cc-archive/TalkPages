@@ -22,16 +22,20 @@ function createDualTalk(/*article*/ $obj, $content_actions) {
 
       // create the form edit tab, and apply whatever changes are specified
       // by the edit-tab global variables
-     $form_edit_tab_text = $user_can_edit ? wfMsg('edit') : wfMsg('sf_viewform');
-     if (array_key_exists('edit', $content_actions)) {
+     $comment_tab_text = 'comment'; //TODO wfMsg('comment');
+    
+    /*
+    //This may be useful to rename "talk"     
+    if (array_key_exists('edit', $content_actions)) {
          $content_actions['edit']['text'] = $user_can_edit ? wfMsg('sf_editsource') : wfMsg('viewsource');
      }
+    */
 
-      $class_name = ($wgRequest->getVal('action') == 'formedit') ? 'selected' : '';
+      $class_name = ($wgRequest->getVal('action') == 'comment') ? 'selected' : '';
       $comment_tab = array(
         'class' => $class_name,
         'text' => $form_edit_tab_text,
-        'href' => $obj->mTitle->getLocalURL('action=formedit')
+        'href' => $obj->mTitle->getLocalURL('action=comment')
       );
 
       // find the location of the 'talk' tab, and add 'comments'
