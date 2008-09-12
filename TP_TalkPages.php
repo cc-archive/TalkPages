@@ -1,12 +1,12 @@
 <?php
 global $wgHooks;
-$wgHooks[ 'SkinTemplateTabs' ][] = 'sffFormEditTab';
+$wgHooks[ 'SkinTemplateTabs' ][] = 'CreateDualTalk';
 
 /**
  * Adds an "action" (i.e., a tab) to edit the current article with a form
  */
-function sffFormEditTab($obj, $content_actions) {
-  $fname = 'SFFormEditTab';
+function CreateDualTalk($obj, $content_actions) {
+
   // make sure that this is not itself a category page, and that the user
   // is allowed to edit it
   if (isset($obj->mTitle) && ($obj->mTitle->getNamespace() != NS_CATEGORY)) {
