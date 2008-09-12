@@ -1,11 +1,18 @@
 <?php
+/**
+ * Talk Pages main function.
+ *
+ * @author Yaron Koren
+ * @author Steren Giannini
+ */
+
 global $wgHooks;
-$wgHooks[ 'SkinTemplateTabs' ][] = 'CreateDualTalk';
+$wgHooks[ 'SkinTemplateTabs' ][] = 'createDualTalk';
 
 /**
  * Adds an "action" (i.e., a tab) to edit the current article with a form
  */
-function CreateDualTalk($obj, $content_actions) {
+function createDualTalk($obj, $content_actions) {
 
   // make sure that this is not itself a category page, and that the user
   // is allowed to edit it
