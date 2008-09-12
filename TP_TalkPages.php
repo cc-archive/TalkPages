@@ -10,29 +10,22 @@ global $wgHooks;
 $wgHooks[ 'SkinTemplateTabs' ][] = 'createDualTalk';
 
 /**
- * Adds an "action" (i.e., a tab) to edit the current article with a form
+ * Adds "actions" (i.e., tabs)
  */
-function createDualTalk($obj, $content_actions) {
+function createDualTalk(/*article*/ $obj, $content_actions) {
 
   // make sure that this is not itself a category page, and that the user
   // is allowed to edit it
   if (isset($obj->mTitle) && ($obj->mTitle->getNamespace() != NS_CATEGORY)) {
-    $form_name = sffGetFormForArticle($obj);
-    if ($form_name) {  
+ 
       global $wgRequest, $wgUser;
-      global $sfgRenameEditTabs;
 
-      $user_can_edit = $wgUser->isAllowed('edit') && $obj->mTitle->userCanEdit();
       // create the form edit tab, and apply whatever changes are specified
       // by the edit-tab global variables
-      if ($sfgRenameEditTabs) {
-        $form_edit_tab_text = $user_can_edit ? wfMsg('edit') : wfMsg('sf_viewform');
-        if (array_key_exists('edit', $content_actions)) {
-          $content_actions['edit']['text'] = $user_can_edit ? wfMsg('sf_editsource') : wfMsg('viewsource');
-        }
-      } else {
-        $form_edit_tab_text = $user_can_edit ? wfMsg('sf_formedit') : wfMsg('sf_viewform');
-      }
+     $form_edit_tab_text = $user_can_edit ? wfMsg('edit') : wfMsg('sf_viewform');
+     if (array_key_exists('edit', $content_actions)) {
+         $content_actions['edit']['text'] = $user_can_edit ? wfMsg('sf_editsource') : wfMsg('viewsource');
+     }
 
       $class_name = ($wgRequest->getVal('action') == 'formedit') ? 'selected' : '';
       $form_edit_tab = array(
@@ -71,7 +64,6 @@ function createDualTalk($obj, $content_actions) {
       }
 
       return true;
-    }
   }
   return true; // always return true, in order not to stop MW's hook processing!
 }
