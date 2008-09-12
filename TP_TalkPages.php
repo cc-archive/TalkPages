@@ -28,13 +28,13 @@ function createDualTalk(/*article*/ $obj, $content_actions) {
      }
 
       $class_name = ($wgRequest->getVal('action') == 'formedit') ? 'selected' : '';
-      $form_edit_tab = array(
+      $comment_tab = array(
         'class' => $class_name,
         'text' => $form_edit_tab_text,
         'href' => $obj->mTitle->getLocalURL('action=formedit')
       );
 
-      // find the location of the 'edit' tab, and add 'edit with form'
+      // find the location of the 'talk' tab, and add 'comments'
       // right before it.
       // this is a "key-safe" splice - it preserves both the keys and
       // the values of the array, by editing them separately and then
@@ -42,26 +42,16 @@ function createDualTalk(/*article*/ $obj, $content_actions) {
       // based on the example at http://us2.php.net/manual/en/function.array-splice.php#31234
       $tab_keys = array_keys($content_actions);
       $tab_values = array_values($content_actions);
-      $edit_tab_location = array_search('edit', $tab_keys);
-      // if there's no 'edit' tab, look for the 'view source' tab instead
-      if ($edit_tab_location == NULL)
-        $edit_tab_location = array_search('viewsource', $tab_keys);
-      // this should rarely happen, but if there was no edit *or* view source
+      $talk_tab_location = array_search('talk', $tab_keys);
+      // this should rarely happen, but if there was no talk
       // tab, set the location index to -1, so the tab shows up near the end
       if ($edit_tab_location == NULL)
-        $edit_tab_location = -1;
-      array_splice($tab_keys, $edit_tab_location, 0, 'form_edit');
-      array_splice($tab_values, $edit_tab_location, 0, array($form_edit_tab));
+        $talk_tab_location = -1;
+      array_splice($tab_keys, $talk_tab_location, 0, 'comment');
+      array_splice($tab_values, $talk_tab_location, 0, array($comment_tab));
       $content_actions = array();
       for ($i = 0; $i < count($tab_keys); $i++)
         $content_actions[$tab_keys[$i]] = $tab_values[$i];
-
-      global $wgUser;
-      if (! $wgUser->isAllowed('viewedittab')) {
-        // the tab can have either of those two actions
-        unset($content_actions['edit']);
-        unset($content_actions['viewsource']);
-      }
 
       return true;
   }
